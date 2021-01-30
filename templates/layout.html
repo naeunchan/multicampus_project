@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Youtuber Data</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.css') }}" />
+    <script
+      type="text/javascript"
+      async
+      src="https://www.google-analytics.com/analytics.js"
+    ></script>
+    <script async="" src="https://www.googletagmanager.com/gtag/js?id=UA-23019901-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
+      gtag("config", "UA-23019901-1");
+    </script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <a class="navbar-brand" href="/home"><h3>Home</h3></a>
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-toggle="collapse"
+        data-target="#navbarColor01"
+        aria-controls="navbarColor01"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarColor01">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="/content/game">Game</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/content/mukbang">Mukbang</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/content/comedy">Comedy</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/content/animal">Animal</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/content/beauty">Beauty</a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+    <script src="https://bootswatch.com/_vendor/jquery/dist/jquery.min.js"></script>
+    <script src="https://bootswatch.com/_vendor/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://bootswatch.com/_assets/js/custom.js"></script>
+
+    {% block content %} {% endblock %}
+  </body>
+</html>

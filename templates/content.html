@@ -1,0 +1,152 @@
+{% extends "layout.html" %}
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <script src="https://code.jquery.com/jquery-latest.min.js"></script>
+  </head>
+  <body>
+    {% block content%}
+    <div id="container" style="margin: 10px">
+      <button type="button" class="btn btn-danger" id="btn1" style="margin-right: 50px">
+        {% if youtuber[0] == "Hatnim" %} 입짧은햇님 {% elif youtuber[0] == "DDDD" %}뜨뜨뜨뜨 {% elif
+        youtuber[0] == "Daddoa" %}다또아 {% elif youtuber[0] == "Jjw" %}조재원 {% elif youtuber[0]
+        == "Kang" %}강형욱{% endif %}
+      </button>
+      <button type="button" class="btn btn-danger" id="btn2" style="margin-right: 50px">
+        {% if youtuber[1] == "HongSound" %} 홍사운드 {% elif youtuber[1] == "Kimjaewon" %}김재원 {%
+        elif youtuber[1] == "Hyojin" %}조효진 {% elif youtuber[1] == "Bms" %}보물섬 {% elif
+        youtuber[1] == "SueAndTree" %}슈앤트리{% endif %}
+      </button>
+      <button type="button" class="btn btn-danger" id="btn3" style="margin-right: 50px">
+        {% if youtuber[2] == "HeungSam" %} 흥삼 {% elif youtuber[2] == "WoojooHama" %}우주하마 {%
+        elif youtuber[2] == "SsinNim" %}씬님 {% elif youtuber[2] == "Wootso" %}웃소 {% elif
+        youtuber[2] == "Hahaha" %}하하하{% endif %}
+      </button>
+    </div>
+    <div id="table_area">
+      <table class="table" border="1" style="margin: 5px 5px 5px 5px">
+        <thead class="table-active" align="center">
+          <th>Title</th>
+          <th>Views</th>
+          <th>Like</th>
+          <th>Dislike</th>
+          <th>Comments</th>
+          <th>Date</th>
+          <th>Keyword</th>
+        </thead>
+        <tbody>
+          {% for info in data %}
+          <tr>
+            {% for element in info %}
+            <td>{{element}}</td>
+            {% endfor %}
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    <div id="img_area" style="margin: 5px 5px 5px 5px">
+      <div id="wc_area" style="display: inline-block">
+        <h4>Word Cloud</h4>
+        <img src="{{wc}}" alt="Error" width="400" height="400" style="display: block" />
+      </div>
+      <div id="cor_area" style="display: inline-block">
+        <h4>상관도</h4>
+        <img src="{{cor}}" alt="Error" width="400" height="400" style="display: block" />
+      </div>
+      <div id="sim_area" style="display: inline-block">
+        <h4>유사도</h4>
+        <img src="{{sim}}" alt="Error" width="400" height="400" style="display: block" />
+      </div>
+    </div>
+    <script>
+      let category = "{{category}}";
+      let youtuber1 = "{{youtuber[0]}}";
+      let youtuber2 = "{{youtuber[1]}}";
+      let youtuber3 = "{{youtuber[2]}}";
+
+      function successFunction(data) {
+        let info = data.split(/\r?\n|\r/);
+        let table = "<table class='table' border='1' style='margin: 5px 5px 5px 5px'>";
+        let head =
+          "<thead class='table-active' align='center'><th>Title</th><th>Views</th><th>Like</th><th>Dislike</th><th>Comments</th><th>Date</th><th>Keyword</th></thead>";
+        table += head;
+        for (let i = 1; i < 11; i++) {
+          let cell = info[i].split(",");
+          let keyword = "<td>";
+          for (let j = 1; j < cell.length; j++) {
+            if (j >= 7) {
+              keyword += cell[j];
+            } else {
+              table += "<td>" + cell[j];
+            }
+          }
+          keyword += "</td>";
+          keyword = keyword.replaceAll('"', "");
+          keyword = keyword.replaceAll("' '", "', '");
+          table += keyword + "</tr>";
+        }
+        table += "</tbody></table>";
+        $("#table_area").html(table);
+      }
+      function loadImg(wc, cor, sim) {
+        wc =
+          "<h4>Word Cloud</h4><img src=" +
+          wc +
+          ' alt="Error" width="400" height="400" style="display: block" />';
+        cor =
+          "<h4>상관도</h4><img src=" +
+          cor +
+          ' alt="Error" width="400" height="400" style="display: block" />';
+        sim =
+          "<h4>유사도</h4><img src=" +
+          sim +
+          ' alt="Error" width="400" height="400" style="display: block" />';
+        $("#wc_area").html(wc);
+        $("#cor_area").html(cor);
+        $("#sim_area").html(sim);
+      }
+      $("#btn1").click(function () {
+        ((wc = "../static/" + category + "/" + youtuber1 + "/word_cloud.jpg"),
+        (cor = "../static/" + category + "/" + youtuber1 + "/correlation.jpg"),
+        (sim = "../static/" + category + "/" + youtuber1 + "/similarity.jpg")),
+          $.ajax({
+            url: "../static/" + category + "/" + youtuber1 + "/table.csv",
+            dataType: "text",
+            contentType: "application/x-www-form-urlencoded; charset=euc-kr",
+            async: false,
+          })
+            .done(successFunction)
+            .done(loadImg(wc, cor, sim));
+      });
+      $("#btn2").click(function () {
+        ((wc = "../static/" + category + "/" + youtuber2 + "/word_cloud.jpg"),
+        (cor = "../static/" + category + "/" + youtuber2 + "/correlation.jpg"),
+        (sim = "../static/" + category + "/" + youtuber2 + "/similarity.jpg")),
+          $.ajax({
+            url: "../static/" + category + "/" + youtuber2 + "/table.csv",
+            dataType: "text",
+            contentType: "application/x-www-form-urlencoded; charset=euc-kr",
+            async: false,
+          })
+            .done(successFunction)
+            .done(loadImg(wc, cor, sim));
+      });
+      $("#btn3").click(function () {
+        ((wc = "../static/" + category + "/" + youtuber3 + "/word_cloud.jpg"),
+        (cor = "../static/" + category + "/" + youtuber3 + "/correlation.jpg"),
+        (sim = "../static/" + category + "/" + youtuber3 + "/similarity.jpg")),
+          $.ajax({
+            url: "../static/" + category + "/" + youtuber3 + "/table.csv",
+            dataType: "text",
+            contentType: "application/x-www-form-urlencoded; charset=euc-kr",
+            async: false,
+          })
+            .done(successFunction)
+            .done(loadImg(wc, cor, sim));
+      });
+    </script>
+    {% endblock %}
+  </body>
+</html>
